@@ -13,6 +13,27 @@ def salvar_produtos(produtos):
 
 produtos = carregar_produtos()
 
+def seletor():
+    while True:
+        escolha = input('Selecione dentre as opções 1/2/3/4: ')
+
+        if escolha == '1':
+            cadastrar_produto()
+
+        elif escolha == '2':
+            excluir_produto()
+
+        elif escolha == '3':
+            visualizacao()
+
+        elif escolha == '4':
+            modificar_estoque()
+
+        if escolha == '0':
+            print('Fechando..')
+            break
+
+
 def cadastrar_produto():
 
     new_id = int(input('Digite a Id: '))
@@ -30,6 +51,7 @@ def cadastrar_produto():
     })
 
     salvar_produtos(produtos)
+    return menu
 
 def excluir_produto():
     print (produtos)
@@ -61,6 +83,55 @@ def visualizacao():
                 print (produto)
                 return visualizacao()
 
+def modificar_estoque():
+   while True:
+    busca = int(input('Digite o Id do produto registrado para modifica-lo: '))
+    id_encontrado = False
+
+    for produto in produtos:
+        if produto['id'] == busca:
+            id_encontrado = True 
+            
+            print(f"Produto encontrado: {produto['nome']}")
+            print('1 - Id')
+            print('2 - Nome')
+            print('3 - Categoria')
+            print('4 - Preço')
+            print('5 - Quantidade')
+
+            mod = input('Selecione a opção desejada para modificar: ')
+
+            if mod == '1':
+                new_id = int(input('Digite o novo Id: '))
+                produto['id'] = new_id
+
+            elif mod == '2':
+                new_nome = input('Digite o novo nome: ')
+                produto['nome'] = new_nome
+
+            elif mod == '3':
+                new_categoria = input('Digite a nova categoria: ')
+                produto['categoria'] = new_categoria
+
+            elif mod == '4':
+                new_price = float(input('Digite o novo preço: '))
+                produto['preco'] = new_price
+
+            elif mod == '5':
+                new_quant = int(input('Digite a nova quantia: '))
+                produto['quantidade'] = new_quant   
+
+            salvar_produtos()
+            print("Produto atualizado com sucesso!")
+            
+            escolha = input('Deseja modificar outro produto (Y/N)? ')
+            if escolha.lower() == 'y':
+                break
+            else:
+                return seletor()
+                
+    if not id_encontrado:
+        print('Produto não encontrado.\n')
 
 
 while True:
@@ -68,18 +139,6 @@ while True:
     print ('1 - Cadastrar produto')
     print ('2 - Remover produto')
     print ('3 - Visualizar estoque')
+    print ('4 - Modificar produtos')
 
-    escolha = input('Selecione dentre as opções 1/2/3: ')
-
-    if escolha == '0':
-        print('Fechando..')
-        break
-
-    elif escolha == '1':
-        cadastrar_produto()
-
-    elif escolha == '2':
-        excluir_produto()
-
-    elif escolha == '3':
-        visualizacao()
+    menu = seletor()
